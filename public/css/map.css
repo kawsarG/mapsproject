@@ -79,7 +79,10 @@
 }
 
 .search {
+    background-color: #2D3F50;
     position: absolute;
     top: 5px;
-    left: 600px;
+    left: 800px;
+    padding: 15px 10px;
+    border-radius: 5px;
 }

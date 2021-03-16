@@ -79,10 +79,13 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4" style="background-color:white;">
             @yield('content')
         </main>
     </div>
+
+
+    <script src="js/app.js"></script>
 </body>
 
 </html>

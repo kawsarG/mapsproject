@@ -29,14 +29,21 @@
  // Search places
 
  class AutocompleteDirectionsHandler {
+
      constructor(map) {
              this.map = map;
              this.originPlaceId = "";
              this.destinationPlaceId = "";
              this.travelMode = google.maps.TravelMode.WALKING;
              this.directionsService = new google.maps.DirectionsService();
-             this.directionsRenderer = new google.maps.DirectionsRenderer();
+             this.directionsRenderer = new google.maps.DirectionsRenderer({
+                 draggable: true,
+             });
+
              this.directionsRenderer.setMap(map);
+             this.directionsRenderer.addListener("directions_changed", () => {
+                 this.computeTotalDistance(this.directionsRenderer.getDirections());
+             });
              const originInput = document.getElementById("origin-input");
              const destinationInput = document.getElementById("destination-input");
              const modeSelector = document.getElementById("mode-selector");
@@ -73,6 +80,7 @@
              this.route();
          });
      }
+
      setupPlaceChangedListener(autocomplete, mode) {
          autocomplete.bindTo("bounds", this.map);
          autocomplete.addListener("place_changed", () => {
@@ -91,6 +99,7 @@
              this.route();
          });
      }
+
      route() {
          if (!this.originPlaceId || !this.destinationPlaceId) {
              return;
@@ -100,14 +109,37 @@
                  origin: { placeId: this.originPlaceId },
                  destination: { placeId: this.destinationPlaceId },
                  travelMode: this.travelMode,
+
              },
              (response, status) => {
                  if (status === "OK") {
                      me.directionsRenderer.setDirections(response);
+
                  } else {
                      window.alert("Directions request failed due to " + status);
                  }
+
              }
          );
+
+     }
+     computeTotalDistance(result) {
+         let total = 0;
+         for (let i = 0; i < result.routes[0].legs[0].steps.length; i++) {
+             console.log(result.routes[0].legs[0].steps[i].polyline)
+         }
+         const myroute = result.routes[0];
+
+         if (!myroute) {
+             return;
+         }
+         let distancepoints = [];
+         for (let i = 0; i < myroute.legs.length; i++) {
+             distancepoints[i] = myroute.legs[i].distance.value
+             total += myroute.legs[i].distance.value;
+         }
+         total = total / 1000;
+         console.log(total, "legs " + myroute.legs.length, "array " + distancepoints);
+
      }
  }

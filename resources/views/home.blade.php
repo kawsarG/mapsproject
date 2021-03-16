@@ -93,8 +93,13 @@
                                             class="d-none">
                                             @csrf
                                         </form>
+                                        <a class="dropdown-item" href="{{ route('users') }}">
+                                            Manage Users
+                                        </a>
                                     </div>
+
                                 </li>
+
                                 @endguest
                             </ul>
                         </div>
@@ -126,7 +131,7 @@
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=Youkeywillbehere&libraries=places" async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=key&libraries=places" async></script>
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
 
